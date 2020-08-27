@@ -55,7 +55,7 @@ public final class ColumnData implements Data {
     @Override
     public String toString() {
         return "ColumnData { " +
-            "name='" + name + '\'' +
+            "name=" + name +
             ", sqlType=" + sqlType.getName() +
             ", primary=" + primary +
             ", autoIncrement=" + autoIncrement +

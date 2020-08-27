@@ -33,7 +33,7 @@ public final class TableData implements Data {
         return "TableData { " +
             "type=" + type.getSimpleName() +
             ", hash=" + Integer.toHexString(hash) +
-            ", name='" + name + '\'' +
+            ", name=" + name +
             " }";
     }
 }
