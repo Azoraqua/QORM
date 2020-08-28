@@ -8,7 +8,7 @@ import java.io.Serializable;
 @Table(name = "Roles")
 public final class Role implements Serializable {
 
-    @Column
+    @Column(primary = true, auto = true)
     protected int id;
 
     @Column

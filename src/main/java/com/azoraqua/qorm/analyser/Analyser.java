@@ -2,6 +2,7 @@ package com.azoraqua.qorm.analyser;
 
 import com.azoraqua.qorm.annotation.Column;
 import com.azoraqua.qorm.annotation.Table;
+import com.azoraqua.qorm.com.azoraqua.qorm.hasher.Hasher;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -38,7 +39,8 @@ public final class Analyser {
 
             if (clazz.isAnnotationPresent(Table.class)) {
                 final Table table = clazz.getDeclaredAnnotation(Table.class);
-                data.add(new TableData(clazz, obj.hashCode(), (table.name().isEmpty() ? clazz.getSimpleName() : table.name())));
+                final TableData tableData = new TableData(clazz, obj.hashCode(), (table.name().isEmpty() ? clazz.getSimpleName() : table.name()));
+                data.add(tableData);
 
                 for (Field field : clazz.getDeclaredFields()) {
                     field.setAccessible(true);
@@ -49,15 +51,19 @@ public final class Analyser {
                         final Column column = field.getDeclaredAnnotation(Column.class);
                         final Object val = field.get((isStatic ? null : obj));
                         final Class<?> valClass = val.getClass();
+                        final Class<? extends Hasher> hasherClass = column.hasher();
 
                         data.add(new ColumnData(
+                            tableData,
                             column.name().isEmpty() ? field.getName() : column.name(),
                             column.type() == JDBCType.NULL ? this.toJDBCType(field.getType()) : column.type(),
                             column.primary(),
                             column.auto(),
                             column.nullable(),
+                            hasherClass,
                             valClass,
-                            val
+                            val,
+                            String.valueOf(val).length()
                         ));
 
                         if (valClass.isAnnotationPresent(Table.class) && !val.equals(obj)) {

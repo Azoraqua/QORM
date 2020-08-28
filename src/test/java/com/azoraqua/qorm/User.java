@@ -2,6 +2,7 @@ package com.azoraqua.qorm;
 
 import com.azoraqua.qorm.annotation.Column;
 import com.azoraqua.qorm.annotation.Table;
+import com.azoraqua.qorm.com.azoraqua.qorm.hasher.SHA256Hasher;
 
 import java.io.Serializable;
 
@@ -14,7 +15,7 @@ public final class User implements Serializable {
     @Column
     protected String name;
 
-    @Column
+    @Column(hasher = SHA256Hasher.class)
     protected String password;
 
     @Column
