@@ -23,7 +23,7 @@ public final class ORMTest {
 
             orm = new QORM(properties);
         } catch (Exception e) {
-            throw new IllegalStateException("Cannot setup com.azoraqua.qorm.ORMTest", e);
+            throw new IllegalStateException("Cannot setup ORMTest", e);
         }
     }
 
