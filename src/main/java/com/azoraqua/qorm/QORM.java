@@ -6,16 +6,19 @@ import java.util.Properties;
 
 public final class QORM {
 
-    private MysqlDataSource source;
+    @SuppressWarnings("FieldCanBeLocal")
+    private static MysqlDataSource source;
 
     public QORM(Properties properties) {
         this.init(properties);
     }
 
+    @SuppressWarnings("unused")
     public <T> void save(T obj) {
         // TODO: Implement.
     }
 
+    @SuppressWarnings("unused")
     public <T> T load(Class<? extends T> clazz) {
         return null; // TODO: Implement.
     }

@@ -2,13 +2,16 @@ package com.azoraqua.qorm.analyser;
 
 import java.sql.JDBCType;
 
+@SuppressWarnings("unused")
 public final class ColumnData implements Data {
 
-    protected String name;
-    protected JDBCType sqlType;
-    protected boolean primary, autoIncrement, nullable;
-    protected Class<?> type;
-    protected Object value;
+    private final String name;
+    private final JDBCType sqlType;
+    private final boolean primary;
+    private final boolean autoIncrement;
+    private final boolean nullable;
+    private final Class<?> type;
+    private final Object value;
 
     public ColumnData(String name, JDBCType sqlType, boolean primary, boolean autoIncrement, boolean nullable, Class<?> type, Object value) {
         this.name = name;
@@ -18,10 +21,6 @@ public final class ColumnData implements Data {
         this.nullable = nullable;
         this.type = type;
         this.value = value;
-    }
-
-    // Only internal.
-    protected ColumnData() {
     }
 
     public String getName() {

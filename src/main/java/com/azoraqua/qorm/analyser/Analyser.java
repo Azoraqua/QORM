@@ -13,7 +13,6 @@ import java.util.Map;
 
 public final class Analyser {
 
-    private static final String SEPERATOR = "---------------------------------------------------";
     private static final Map<Class<?>, JDBCType> TYPE_MAP = new HashMap<>() {{
         super.putIfAbsent(String.class, JDBCType.VARCHAR);
         super.putIfAbsent(Integer.class, JDBCType.INTEGER);
@@ -67,10 +66,10 @@ public final class Analyser {
                     }
                 }
             } else {
-                throw new IllegalStateException("Not going to save.");
+                throw new IllegalStateException("No table annotation found.");
             }
         } catch (ReflectiveOperationException e) {
-            throw new IllegalStateException("Cannot access", e);
+            throw new IllegalStateException("Cannot access class/field", e);
         }
     }
 

@@ -1,19 +1,16 @@
 package com.azoraqua.qorm.analyser;
 
+@SuppressWarnings("unused")
 public final class TableData implements Data {
 
-    protected Class<?> type;
-    protected int hash;
-    protected String name;
+    private final Class<?> type;
+    private final int hash;
+    private final String name;
 
     public TableData(Class<?> type, int hash, String name) {
         this.type = type;
         this.hash = hash;
         this.name = name;
-    }
-
-    // Only internal.
-    protected TableData() {
     }
 
     public Class<?> getType() {
