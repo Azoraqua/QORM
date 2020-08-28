@@ -45,7 +45,7 @@ public final class ORMTest {
     }
 
     @AfterEach
-    public void tearDown() {
+    public void teardown() {
         analyser.cleanup();
     }
 }
