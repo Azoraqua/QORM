@@ -1,4 +1,5 @@
-import com.azoraqua.qorm.QORM;
+package com.azoraqua.qorm;
+
 import com.azoraqua.qorm.analyser.Analyser;
 import com.azoraqua.qorm.analyser.Data;
 import org.junit.jupiter.api.BeforeAll;
@@ -11,6 +12,7 @@ import java.util.Properties;
 
 public final class ORMTest {
 
+    @SuppressWarnings({"unused", "FieldCanBeLocal"})
     private static QORM orm;
 
     @BeforeAll
@@ -21,7 +23,7 @@ public final class ORMTest {
 
             orm = new QORM(properties);
         } catch (Exception e) {
-            throw new IllegalStateException("Cannot setup ORMTest", e);
+            throw new IllegalStateException("Cannot setup com.azoraqua.qorm.ORMTest", e);
         }
     }
 

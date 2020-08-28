@@ -1,3 +1,5 @@
+package com.azoraqua.qorm;
+
 public final class UserFactory {
 
     public static User of(int id, String name, String password, Role role) {

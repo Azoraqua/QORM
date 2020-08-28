@@ -1,3 +1,5 @@
+package com.azoraqua.qorm;
+
 import com.azoraqua.qorm.annotation.Column;
 import com.azoraqua.qorm.annotation.Table;
 
