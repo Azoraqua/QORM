@@ -2,7 +2,6 @@ package com.azoraqua.qorm;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
 
-import java.sql.JDBCType;
 import java.util.Properties;
 
 public final class QORM {
