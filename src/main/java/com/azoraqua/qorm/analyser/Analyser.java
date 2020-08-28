@@ -73,8 +73,14 @@ public final class Analyser {
         }
     }
 
-    public List<Data> getData() {
-        return data;
+    public void describe(boolean verbose) {
+        for (Data d : data) {
+            System.out.println(verbose ? d.toString() : reduce(d.toString()));
+        }
+    }
+
+    public void describe() {
+        describe(false);
     }
 
     private JDBCType toJDBCType(Class<?> clazz) {
@@ -87,5 +93,14 @@ public final class Analyser {
         } catch (IllegalArgumentException | EnumConstantNotPresentException e) {
             return JDBCType.OTHER;
         }
+    }
+
+    private String reduce(String str) {
+        return str
+            .replaceAll("@[a-zA-Z0-9]+", "")
+            .replaceAll("hash=[a-zA-Z0-9]+, ", "")
+            .replace("primary=false, ", "")
+            .replace("autoIncrement=false, ", "")
+            .replace("nullable=false, ", "");
     }
 }

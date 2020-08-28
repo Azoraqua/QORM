@@ -1,7 +1,6 @@
 package com.azoraqua.qorm;
 
 import com.azoraqua.qorm.analyser.Analyser;
-import com.azoraqua.qorm.analyser.Data;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -29,11 +28,11 @@ public final class ORMTest {
 
     @Test
     public void test() {
-        final Analyser analyser = new Analyser();
-        analyser.analyse(UserFactory.of(1, "Dummy", "Dummy123", RoleFactory.of(1, "Admin")));
+        final Role role = RoleFactory.of(1, "Admin");
+        final User user = UserFactory.of(1, "Dummy", "Dummy123", role);
 
-        for (Data data : analyser.getData()) {
-            System.out.println(data);
-        }
+        final Analyser analyser = new Analyser();
+        analyser.analyse(user);
+        analyser.describe(true);
     }
 }
