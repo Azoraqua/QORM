@@ -49,7 +49,7 @@ public final class ORMTest {
     }
 
     @Test
-    public void testGenerateSQLUsersTable() {
+    public void testGenerateSQLCreateUsersTable() {
         final Generator generator = new CreateTableGenerator();
         final List<Data> dataList = analyser.getData();
 
@@ -78,7 +78,7 @@ public final class ORMTest {
     }
 
     @Test
-    public void testGenerateSQLRolesTable() {
+    public void testGenerateSQLCreateRolesTable() {
         final Generator generator = new CreateTableGenerator();
         final List<Data> dataList = analyser.getData();
 
