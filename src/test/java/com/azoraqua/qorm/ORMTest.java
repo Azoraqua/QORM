@@ -2,8 +2,7 @@ package com.azoraqua.qorm;
 
 import com.azoraqua.qorm.analyser.Analyser;
 import com.azoraqua.qorm.analyser.TableData;
-import com.azoraqua.qorm.sql.CreateTableGenerator;
-import com.azoraqua.qorm.sql.Generator;
+import com.azoraqua.qorm.sql.*;
 import org.junit.jupiter.api.*;
 
 import java.io.File;
@@ -38,15 +37,11 @@ public final class ORMTest {
     @BeforeEach
     public void analyse() {
         analyser.analyse(USER);
-    }
-
-    @Test
-    public void testDescribe() {
         analyser.describe();
     }
 
     @Test
-    public void testGenerateSQLCreateUsersTable() {
+    public void testGenerateSQLCreateTable() {
         final Generator generator = new CreateTableGenerator();
         final Optional<TableData> optUsersTable = analyser.getTableData(User.class);
 
@@ -60,11 +55,7 @@ public final class ORMTest {
         } else {
             throw new IllegalStateException("Table does not exist in data-set.");
         }
-    }
 
-    @Test
-    public void testGenerateSQLCreateRolesTable() {
-        final Generator generator = new CreateTableGenerator();
         final Optional<TableData> optRolesTable = analyser.getTableData(Role.class);
 
         if (optRolesTable.isPresent()) {
@@ -79,8 +70,78 @@ public final class ORMTest {
         }
     }
 
+    @Test
+    public void testGenerateSQLDropTable() {
+        final Generator generator = new DropTableGenerator();
+
+        String sql = generator.generate(analyser.getTableData(User.class).orElseThrow(), analyser.getColumnData(User.class));
+        Assertions.assertEquals("DROP TABLE Users;", sql);
+        System.out.println(sql);
+
+        sql = generator.generate(analyser.getTableData(Role.class).orElseThrow(), analyser.getColumnData(Role.class));
+        Assertions.assertEquals("DROP TABLE Roles;", sql);
+        System.out.println(sql);
+    }
+
+    @Test
+    public void testGenerateSQLSelect() {
+        final Generator generator = new SelectGenerator();
+
+        String sql = generator.generate(analyser.getTableData(User.class).orElseThrow(), analyser.getColumnData(User.class));
+        Assertions.assertEquals("SELECT * FROM Users;", sql);
+        System.out.println(sql);
+
+        sql = generator.generate(analyser.getTableData(Role.class).orElseThrow(), analyser.getColumnData(Role.class));
+        Assertions.assertEquals("SELECT * FROM Roles;", sql);
+        System.out.println(sql);
+    }
+
+    @Test
+    public void testGenerateSQLSelectById() {
+        final Generator generator = new SelectByIdGenerator();
+
+        String sql = generator.generate(analyser.getTableData(User.class).orElseThrow(), analyser.getColumnData(User.class));
+        Assertions.assertEquals("SELECT * FROM Users WHERE id=:id;", placeholderify(sql));
+        System.out.println(sql);
+
+        sql = generator.generate(analyser.getTableData(Role.class).orElseThrow(), analyser.getColumnData(Role.class));
+        Assertions.assertEquals("SELECT * FROM Roles WHERE id=:id;", placeholderify(sql));
+        System.out.println(sql);
+    }
+
+    @Test
+    public void testGenerateSQLDelete() {
+        final Generator generator = new DeleteGenerator();
+
+        String sql = generator.generate(analyser.getTableData(User.class).orElseThrow(), analyser.getColumnData(User.class));
+        Assertions.assertEquals("DELETE FROM Users;", sql);
+        System.out.println(sql);
+
+        sql = generator.generate(analyser.getTableData(Role.class).orElseThrow(), analyser.getColumnData(Role.class));
+        Assertions.assertEquals("DELETE FROM Roles;", sql);
+        System.out.println(sql);
+    }
+
+    @Test
+    public void testGenerateSQLDeleteById() {
+        final Generator generator = new DeleteByIdGenerator();
+
+        String sql = generator.generate(analyser.getTableData(User.class).orElseThrow(), analyser.getColumnData(User.class));
+        Assertions.assertEquals("DELETE FROM Users WHERE id=:id;", placeholderify(sql));
+        System.out.println(sql);
+
+        sql = generator.generate(analyser.getTableData(Role.class).orElseThrow(), analyser.getColumnData(Role.class));
+        Assertions.assertEquals("DELETE FROM Roles WHERE id=:id;", placeholderify(sql));
+        System.out.println(sql);
+    }
+
     @AfterEach
     public void teardown() {
         analyser.cleanup();
+    }
+
+    private String placeholderify(String str) {
+        return str.replaceAll("=[0-9]+", "=:id")
+            .replaceAll("=[a-zA-Z]+", "=:name");
     }
 }

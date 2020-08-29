@@ -31,7 +31,7 @@ public final class Analyser {
     }
 
     @SuppressWarnings("unchecked")
-    public <T> void analyse(T obj) {
+    public synchronized <T> void analyse(T obj) {
         try {
             final Class<? extends T> clazz = (Class<? extends T>) obj.getClass();
 
@@ -96,7 +96,7 @@ public final class Analyser {
         describe(false);
     }
 
-    public void cleanup() {
+    public synchronized void cleanup() {
         data.clear();
     }
 
