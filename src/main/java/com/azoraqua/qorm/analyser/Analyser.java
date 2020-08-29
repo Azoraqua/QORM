@@ -52,6 +52,8 @@ public final class Analyser {
                         final Object val = field.get((isStatic ? null : obj));
                         final Class<?> valClass = val.getClass();
                         final Class<? extends Hasher> hasherClass = column.hasher();
+                        final Hasher hasher = hasherClass.newInstance();
+                        final byte[] hashedValue = hasher.hash(String.valueOf(val));
 
                         data.add(new ColumnData(
                             tableData,
@@ -60,10 +62,13 @@ public final class Analyser {
                             column.primary(),
                             column.auto(),
                             column.nullable(),
-                            hasherClass,
+                            hasher,
                             valClass,
                             val,
-                            String.valueOf(val).length()
+                            String.valueOf(val).length(),
+                            hashedValue,
+                            hashedValue.length,
+                            column.length()
                         ));
 
                         if (valClass.isAnnotationPresent(Table.class) && !val.equals(obj)) {

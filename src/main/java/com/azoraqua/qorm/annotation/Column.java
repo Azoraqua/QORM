@@ -22,4 +22,6 @@ public @interface Column {
     boolean nullable() default false;
 
     Class<? extends Hasher> hasher() default DefaultHasher.class;
+
+    int length() default 255;
 }

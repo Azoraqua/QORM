@@ -17,9 +17,6 @@ public final class SHA256Hasher implements Hasher {
 
     @Override
     public byte[] hash(String str) {
-        final byte[] bytes = str.getBytes(StandardCharsets.UTF_8);
-        md.update(bytes);
-
-        return bytes;
+        return md.digest(str.getBytes(StandardCharsets.UTF_8));
     }
 }

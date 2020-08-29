@@ -9,13 +9,13 @@ import java.io.Serializable;
 @Table(name = "Users")
 public final class User implements Serializable {
 
-    @Column(primary = true, auto = true)
+    @Column(primary = true, auto = true, length = 11)
     protected int id;
 
-    @Column
+    @Column(length = 16)
     protected String name;
 
-    @Column(hasher = SHA256Hasher.class)
+    @Column(hasher = SHA256Hasher.class, length = 255)
     protected String password;
 
     @Column

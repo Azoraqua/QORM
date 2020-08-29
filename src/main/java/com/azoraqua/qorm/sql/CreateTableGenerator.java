@@ -2,6 +2,7 @@ package com.azoraqua.qorm.sql;
 
 import com.azoraqua.qorm.analyser.ColumnData;
 import com.azoraqua.qorm.analyser.TableData;
+import com.azoraqua.qorm.com.azoraqua.qorm.hasher.DefaultHasher;
 
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -36,7 +37,16 @@ public final class CreateTableGenerator implements Generator {
 
         sb.append(c.getName())
             .append(" ")
-            .append(c.getSqlType());
+            .append(c.getSqlType())
+            .append("(");
+
+        if (c.getHasher().getClass().equals(DefaultHasher.class)) {
+            sb.append(c.getLength());
+        } else {
+            sb.append(c.getHashedValueLength());
+        }
+
+        sb.append(")");
 
         if (!c.isNullable()) {
             sb.append(" ")
