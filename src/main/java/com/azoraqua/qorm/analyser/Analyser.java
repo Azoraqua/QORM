@@ -86,6 +86,10 @@ public final class Analyser {
 
     public void describe(boolean verbose) {
         for (Data d : data) {
+            if (d instanceof TableData) {
+                System.out.println();
+            }
+
             System.out.println(verbose ? d.toString() : reduce(d.toString()));
         }
     }
