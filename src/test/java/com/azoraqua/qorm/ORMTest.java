@@ -6,10 +6,7 @@ import com.azoraqua.qorm.analyser.Data;
 import com.azoraqua.qorm.analyser.TableData;
 import com.azoraqua.qorm.sql.CreateTableGenerator;
 import com.azoraqua.qorm.sql.Generator;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -69,7 +66,12 @@ public final class ORMTest {
                 .filter(d -> d.getParent().equals(optUsersTable.get()))
                 .toArray(ColumnData[]::new);
 
-            System.out.println(generator.generate(optUsersTable.get(), columns));
+            final String sql = generator.generate(optUsersTable.get(), columns);
+            Assertions.assertEquals(
+                "CREATE TABLE IF NOT EXISTS Users (id INTEGER(1) NOT NULL AUTO_INCREMENT, name VARCHAR(5) NOT NULL, password VARCHAR(32) NOT NULL, role OTHER(31) NOT NULL, PRIMARY KEY (id));",
+                sql
+            );
+            System.out.println(sql);
         } else {
             throw new IllegalStateException("Table does not exist in data-set.");
         }
@@ -93,7 +95,12 @@ public final class ORMTest {
                 .filter(d -> d.getParent().equals(optRolesTable.get()))
                 .toArray(ColumnData[]::new);
 
-            System.out.println(generator.generate(optRolesTable.get(), columns));
+            final String sql = generator.generate(optRolesTable.get(), columns);
+            Assertions.assertEquals(
+                "CREATE TABLE IF NOT EXISTS Roles (id INTEGER(1) NOT NULL AUTO_INCREMENT, name VARCHAR(5) NOT NULL, PRIMARY KEY (id));",
+                sql
+            );
+            System.out.println(sql);
         } else {
             throw new IllegalStateException("Table does not exist in data-set.");
         }
