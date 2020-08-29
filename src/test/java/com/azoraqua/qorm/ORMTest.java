@@ -1,8 +1,6 @@
 package com.azoraqua.qorm;
 
 import com.azoraqua.qorm.analyser.Analyser;
-import com.azoraqua.qorm.analyser.ColumnData;
-import com.azoraqua.qorm.analyser.Data;
 import com.azoraqua.qorm.analyser.TableData;
 import com.azoraqua.qorm.sql.CreateTableGenerator;
 import com.azoraqua.qorm.sql.Generator;
@@ -11,7 +9,6 @@ import org.junit.jupiter.api.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
 
@@ -51,22 +48,10 @@ public final class ORMTest {
     @Test
     public void testGenerateSQLCreateUsersTable() {
         final Generator generator = new CreateTableGenerator();
-        final List<Data> dataList = analyser.getData();
-
-        final Optional<TableData> optUsersTable = dataList.stream()
-            .filter(d -> d instanceof TableData)
-            .map(d -> (TableData) d)
-            .filter(d -> d.getType().equals(User.class))
-            .findAny();
+        final Optional<TableData> optUsersTable = analyser.getTableData(User.class);
 
         if (optUsersTable.isPresent()) {
-            final ColumnData[] columns = dataList.stream()
-                .filter(d -> d instanceof ColumnData)
-                .map(d -> (ColumnData) d)
-                .filter(d -> d.getParent().equals(optUsersTable.get()))
-                .toArray(ColumnData[]::new);
-
-            final String sql = generator.generate(optUsersTable.get(), columns);
+            final String sql = generator.generate(optUsersTable.get(), analyser.getColumnData(User.class));
             Assertions.assertEquals(
                 "CREATE TABLE IF NOT EXISTS Users (id INTEGER(1) NOT NULL AUTO_INCREMENT, name VARCHAR(5) NOT NULL, password VARCHAR(32) NOT NULL, role OTHER(31) NOT NULL, PRIMARY KEY (id));",
                 sql
@@ -80,22 +65,10 @@ public final class ORMTest {
     @Test
     public void testGenerateSQLCreateRolesTable() {
         final Generator generator = new CreateTableGenerator();
-        final List<Data> dataList = analyser.getData();
-
-        final Optional<TableData> optRolesTable = dataList.stream()
-            .filter(d -> d instanceof TableData)
-            .map(d -> (TableData) d)
-            .filter(d -> d.getType().equals(Role.class))
-            .findAny();
+        final Optional<TableData> optRolesTable = analyser.getTableData(Role.class);
 
         if (optRolesTable.isPresent()) {
-            final ColumnData[] columns = dataList.stream()
-                .filter(d -> d instanceof ColumnData)
-                .map(d -> (ColumnData) d)
-                .filter(d -> d.getParent().equals(optRolesTable.get()))
-                .toArray(ColumnData[]::new);
-
-            final String sql = generator.generate(optRolesTable.get(), columns);
+            final String sql = generator.generate(optRolesTable.get(), analyser.getColumnData(Role.class));
             Assertions.assertEquals(
                 "CREATE TABLE IF NOT EXISTS Roles (id INTEGER(1) NOT NULL AUTO_INCREMENT, name VARCHAR(5) NOT NULL, PRIMARY KEY (id));",
                 sql
